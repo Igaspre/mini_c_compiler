@@ -1,10 +1,8 @@
 # C-- Compiler
 
-A compiler for **C--**, a small statically-typed subset of C, built as a university
-compiler-construction project. It performs lexical, syntactic and semantic analysis and generates **three-address code (3AC)** that runs on a stack-based virtual machine.
+A compiler for **C--**, a small statically-typed subset of C, built as a university compiler-construction project. It performs lexical, syntactic and semantic analysis and generates **three-address code (3AC)** that runs on a stack-based virtual machine.
 
-The compiler is implemented in **C** using **Flex** (scanner) and **Bison** (parser),
-following the classic single-pass, syntax-directed translation approach: semantic checks and code generation happen inside the grammar actions while parsing.
+The compiler is implemented in **C** using **Flex** (scanner) and **Bison** (parser), following the classic single-pass, syntax-directed translation approach: semantic checks and code generation happen inside the grammar actions while parsing.
 
 > Academic project (2023–2024) developed by a team of 4 students.
 
