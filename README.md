@@ -10,14 +10,40 @@ The compiler is implemented in **C** using **Flex** (scanner) and **Bison** (par
 
 ## Compilation pipeline
 
-```
- source.c  ──▶  Scanner (Flex)  ──▶  Parser + Semantic analysis (Bison)  ──▶  source.c3d
-                  alex.l                       asin.y                         (3-address code)
-                                                  │
-                                          Symbol table (libtds)
-                                          Code emission   (libgci)
-                                                  │
-                            source.c3d  ──▶  Virtual machine (mvm)  ──▶  program output
+```mermaid
+flowchart LR
+    SRC(["source.c"])
+
+    subgraph CMC["cmc &nbsp;— single pass"]
+        direction LR
+        LEX["<b>Scanner</b><br/>alex.l · Flex"]
+        PAR["<b>Parser + Semantic analysis</b><br/>asin.y · Bison"]
+        LEX -- "tokens" --> PAR
+    end
+
+    C3D(["source.c3d<br/>three-address code"])
+    MVM["<b>Virtual machine</b><br/>bin/mvm"]
+    OUT(["Program output"])
+
+    TDS["Symbol table<br/>libtds"]
+    GCI["Code emission<br/>libgci"]
+
+    SRC --> LEX
+    PAR --> C3D --> MVM --> OUT
+    PAR <-.-> TDS
+    PAR <-.-> GCI
+
+    classDef file fill:#334155,stroke:#334155,color:#f1f5f9
+    classDef stage fill:#4338ca,stroke:#4338ca,color:#ffffff
+    classDef lib fill:#6d28d9,stroke:#6d28d9,color:#ffffff
+    classDef vm fill:#0f766e,stroke:#0f766e,color:#ffffff
+
+    class SRC,C3D,OUT file
+    class LEX,PAR stage
+    class TDS,GCI lib
+    class MVM vm
+
+    style CMC fill:transparent,stroke:#94a3b8,stroke-width:1px,stroke-dasharray:6 4
 ```
 
 1. **Lexical analysis** ([src/alex.l](src/alex.l)) – tokenizes the input: keywords, identifiers, integer constants, operators and delimiters.
